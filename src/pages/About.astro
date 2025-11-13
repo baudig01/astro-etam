@@ -1,9 +1,9 @@
 ---
-// src/pages/index.astro
+// src/pages/about.astro
 import Layout from '../layouts/layout.astro';
 import { getSingleEntry } from '../contentstack-sdk/fetchContent';
 
-const page = await getSingleEntry('page', { url: '/' });
+const page = await getSingleEntry('page', { url: '/about' });
 
 if (!page) {
   return Astro.redirect('/404');
@@ -13,7 +13,7 @@ const { title, body, seo_title, seo_description } = page;
 ---
 
 <Layout 
-  title={seo_title || title || 'Accueil'}
+  title={seo_title || title || 'À propos'}
   description={seo_description}
 >
   <main class="container mx-auto p-4">

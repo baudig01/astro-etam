@@ -1,3 +1,6 @@
+// src/components/react/Header.tsx
+import "../../styles/header.scss";
+
 interface NavLink {
   title: string;
   href: string;
@@ -13,7 +16,7 @@ interface HeaderProps {
     cta_label?: string;
     cta_url?: string;
     navigation_links?: NavLink[] | { link?: NavLink[] };
-  } | null; // <- important
+  } | null;
 }
 
 export function Header({ data }: HeaderProps) {
@@ -25,8 +28,12 @@ export function Header({ data }: HeaderProps) {
     : [];
 
   return (
-    <header className="flex items-center justify-between p-4 border-b toto">
-      {logo?.url && <img src={logo.url} alt="Logo" className="h-10" />}
+    <header className="flex items-center justify-between p-4 border-b">
+      {logo?.url && (
+        <a href="/">
+          <img src={logo.url} alt="Logo" className="h-10" />
+        </a>
+      )}
       <nav className="flex gap-4">
         {navigation_links.map((link, index) => (
           <a key={`${link.title}--${index}`} href={link.href}>

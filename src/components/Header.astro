@@ -1,0 +1,56 @@
+---
+// src/components/Header.astro
+import '../styles/header.scss';
+
+interface NavLink {
+  title: string;
+  href: string;
+}
+
+interface Logo {
+  url?: string;
+}
+
+interface Props {
+  data?: {
+    logo?: Logo;
+    cta_label?: string;
+    cta_url?: string;
+    navigation_links?: NavLink[] | { link?: NavLink[] };
+  } | null;
+}
+
+const { data } = Astro.props;
+const { logo, cta_label, cta_url } = data || {};
+const navigation_links: NavLink[] = Array.isArray(data?.navigation_links)
+  ? data.navigation_links
+  : Array.isArray(data?.navigation_links?.link)
+  ? data.navigation_links.link
+  : [];
+
+// Récupérer l'URL actuelle pour le lien actif
+const currentPath = Astro.url.pathname;
+---
+
+<header class="flex items-center justify-between p-4 border-b">
+  {logo?.url && (
+    <a href="/">
+      <img src={logo.url} alt="Logo" class="h-10" />
+    </a>
+  )}
+  <nav class="flex gap-4">
+    {navigation_links.map((link) => (
+      <a 
+        href={link.href}
+        class:list={['nav-link', { active: currentPath === link.href }]}
+      >
+        {link.title}
+      </a>
+    ))}
+  </nav>
+  {cta_label && (
+    <a href={cta_url} class="btn-primary">
+      {cta_label}
+    </a>
+  )}
+</header>

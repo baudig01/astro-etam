@@ -1,0 +1,16 @@
+---
+// src/pages/preview.astro
+import PreviewWrapper from '../components/react/PreviewWrapper';
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Mode</title>
+</head>
+<body>
+  <PreviewWrapper client:only="preact" />
+</body>
+</html>
