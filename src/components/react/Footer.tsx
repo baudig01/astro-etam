@@ -22,6 +22,7 @@ export function Footer({ data }: FooterProps) {
                     </a>
                 ))}
             </nav>}
+            
             {information_section && (
                 <div>
                     {information_section.description && <h3 className="title-02">{information_section.description}</h3>}
