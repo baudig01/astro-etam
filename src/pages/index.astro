@@ -2,6 +2,8 @@
 // src/pages/index.astro
 import Layout from '../layouts/layout.astro';
 import { getSingleEntry } from '../contentstack-sdk/fetchContent';
+import '../styles/index.scss';
+
 
 const page = await getSingleEntry('page', { url: '/' });
 
@@ -9,7 +11,7 @@ if (!page) {
   return Astro.redirect('/404');
 }
 
-const { title, body, seo_title, seo_description } = page;
+const { title, body, seo_title, blocks, seo_description } = page;
 ---
 
 <Layout 
@@ -18,6 +20,20 @@ const { title, body, seo_title, seo_description } = page;
 >
   <main class="container mx-auto p-4">
     <h1 class="text-4xl font-bold mb-6">{title}</h1>
+    {blocks.map((block: any) => (
+        <div class="block">
+            {block.title && <h2 class="title-01">{block.title}</h2>}
+            {block.body && <div class="prose" set:html={block.body} />}
+            {block.block.image &&
+              <div class="block__picture">
+                <img class="block__pictureImg" src={block.block.image.url} alt={block.block.image.title} />
+                <span class="block__pictureCaption">{block.block.image.title}</span>
+              </div>
+            }
+        </div>
+
+    ))}
+
     {body && <div class="prose" set:html={body} />}
   </main>
 </Layout>

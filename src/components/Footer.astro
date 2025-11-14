@@ -1,27 +1,53 @@
 ---
 // src/components/Footer.astro
+import '../styles/footer.scss';
+
 interface Props {
   data?: {
+    title: string,
     copyright?: string;
-    social_links?: Array<{ title: string; url: string }>;
-  } | null;
+    information_section?: {
+      description?: string;
+      holiday?: string;
+      logo?: { url: string; title: string };
+      timings?: string;
+    }
+    navigation_links?: {
+      title: string;
+      link: Array<{
+        title: string;
+        href: string;
+        uuid?: number;
+      }>;
+    };  } | null;
 }
 
 const { data } = Astro.props;
-const { copyright, social_links } = data || {};
+const { copyright, title, information_section, navigation_links } = data || {};
 ---
 
-<footer class="p-4 border-t mt-8">
+<footer class="p-4 border-t mt-8 footer">
   <div class="container mx-auto">
-    {social_links && social_links.length > 0 && (
-      <div class="flex gap-4 mb-4">
-        {social_links.map((link) => (
-          <a href={link.url} target="_blank" rel="noopener noreferrer">
-            {link.title}
-          </a>
-        ))}
-      </div>
-    )}
-    {copyright && <p class="text-sm text-gray-600">{copyright}</p>}
+    <div class="footer__wrapper">
+      {title && <h2 class="title-01 footer__title">{title}</h2>}
+      {navigation_links && <nav class="flex gap-4 footer__nav">
+          <h3 class="title-02">{navigation_links.title}</h3>
+          {navigation_links.link.map((link: { title: unknown; href: string | URL | null | undefined; }, index: any) => (
+              <a href={link.href}>
+                  {link.title}
+              </a>
+          ))}
+      </nav>}
+      {information_section && (
+          <div class="footer__infos">
+              {information_section.logo && <img src={information_section.logo.url} alt={information_section.logo.title} />}
+              {information_section.description && <h3 class="title-02">{information_section.description}</h3>}
+              {information_section.holiday && <p class="body-01">{information_section.holiday}</p>}
+              {information_section.timings && <p class="body-01">{information_section.timings}</p>}
+          </div>
+      )}
+
+      {copyright && <p class="text-sm text-gray-600 footer__copyright">{copyright}</p>}
+    </div>  
   </div>
 </footer>
