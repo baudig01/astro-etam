@@ -1,0 +1,29 @@
+---
+// src/components/PageContent.astro
+type Props = {
+  page: any;
+}
+
+const { page } = Astro.props as Props;
+const { title, body, blocks } = page;
+---
+
+<main class="container mx-auto p-4">
+  <h1 class="text-4xl font-bold mb-6">{title}</h1>
+
+  {blocks && blocks.map((block: any) => (
+    <div class="block">
+      {block.title && <h2 class="title-01">{block.title}</h2>}
+      {block.body && <div class="prose" set:html={block.body} />}
+
+      {block.block?.image &&
+        <div class="block__picture">
+          <img class="block__pictureImg" src={block.block.image.url} alt={block.block.image.title} />
+          <span class="block__pictureCaption">{block.block.image.title}</span>
+        </div>
+      }
+    </div>
+  ))}
+
+  {body && <div class="prose" set:html={body} />}
+</main>

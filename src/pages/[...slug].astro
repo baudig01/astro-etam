@@ -1,0 +1,31 @@
+---
+// src/pages/[...slug].astro - Page dynamique pour afficher toutes les pages
+import Layout from '../layouts/layout.astro';
+import { getSingleEntry } from '../contentstack-sdk/fetchContent';
+import '../styles/index.scss';
+import PageContent from '../components/pageContent.astro';
+
+// Activer le server-side rendering pour les routes dynamiques
+export const prerender = false;
+
+// Récupérer le slug depuis les paramètres de la route
+const { slug } = Astro.params;
+const url = slug && slug.length > 0 ? `/${slug.join('/')}` : '/';
+
+// Récupérer la page depuis Contentstack
+const page = await getSingleEntry('page', { url });
+
+if (!page) {
+  return Astro.redirect('/404');
+}
+
+const { title,  seo_title, seo_description } = page;
+---
+
+<Layout 
+  title={seo_title || title || 'Page'}
+  description={seo_description}
+>
+  <PageContent page={page} />
+
+</Layout>

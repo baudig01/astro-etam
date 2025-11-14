@@ -1,0 +1,12 @@
+---
+// src/templates/DefaultTemplate.astro
+import PageContent from '../components/pageContent.astro';
+
+interface Props {
+  page: any;
+}
+
+const { page } = Astro.props;
+
+---
+<PageContent page={page} />

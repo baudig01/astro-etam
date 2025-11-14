@@ -1,5 +1,9 @@
-import type { ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
-import "../styles/footer.scss";
+import "../../styles/footer.scss";
+
+interface NavLink {
+    title: string | number;
+    href: string;
+}
 
 interface FooterProps {
     data: any;
@@ -12,7 +16,7 @@ export function Footer({ data }: FooterProps) {
             {title && <h2 className="title-01">{title}</h2>}
             {navigation_links && <nav className="flex gap-4">
                 <h3 className="title-02">{navigation_links.title}</h3>
-                {navigation_links.link.map((link: { title: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; href: string | undefined; }, index: any) => (
+                {navigation_links.link.map((link: NavLink, index: number) => (
                     <a key={`${link.title}--${index}`} href={link.href}>
                         {link.title}
                     </a>
