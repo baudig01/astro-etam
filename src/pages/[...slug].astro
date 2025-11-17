@@ -9,8 +9,22 @@ import PageContent from '../components/pageContent.astro';
 export const prerender = false;
 
 // Récupérer le slug depuis les paramètres de la route
-const { slug } = Astro.params;
-const url = slug && slug.length > 0 ? `/${slug.join('/')}` : '/';
+const rawSlug = Astro.params.slug;
+
+// Normaliser le slug en array de manière plus robuste
+let slug: string[];
+if (!rawSlug) {
+  slug = [];
+} else if (Array.isArray(rawSlug)) {
+  slug = rawSlug;
+} else if (typeof rawSlug === 'string') {
+  // Si c'est une string, la diviser par '/' pour obtenir les segments
+  slug = rawSlug.split('/').filter(Boolean);
+} else {
+  slug = [String(rawSlug)];
+}
+
+const url = slug.length > 0 ? `/${slug.join('/')}` : '/';
 
 // Récupérer la page depuis Contentstack
 const page = await getSingleEntry('page', { url });
@@ -19,7 +33,7 @@ if (!page) {
   return Astro.redirect('/404');
 }
 
-const { title,  seo_title, seo_description } = page;
+const { title, seo_title, seo_description } = page;
 ---
 
 <Layout 
@@ -27,5 +41,4 @@ const { title,  seo_title, seo_description } = page;
   description={seo_description}
 >
   <PageContent page={page} />
-
 </Layout>
