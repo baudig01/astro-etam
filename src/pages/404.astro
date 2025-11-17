@@ -1,0 +1,16 @@
+---
+// Page 404 personnalisée
+import Layout from '../layouts/Layout.astro';
+import '../styles/index.scss';
+
+export const prerender = false;
+---
+
+<Layout title="Page non trouvée" description="La page demandée est introuvable.">
+  <main class="container mx-auto p-4">
+    <h1>404 - Page non trouvée</h1>
+    <p>La page que vous cherchez n'existe pas ou a été supprimée.</p>
+  </main>
+</Layout>
+
+

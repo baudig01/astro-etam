@@ -2,7 +2,7 @@ import Contentstack from "contentstack";
 
 // Détection robuste du mode preview
 const isPreview = typeof window !== 'undefined' && (
-  window.location.search.includes('live_preview=true') ||
+  window.location.search.includes('preview=true') ||
   window.location.search.includes('content_type_uid') ||
   window.parent !== window
 );
