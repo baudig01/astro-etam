@@ -1,5 +1,5 @@
 ---
-// src/components/Header.astro
+// src/components/header.astro
 import '../styles/header.scss';
 
 interface NavLink {
@@ -37,7 +37,7 @@ const currentPath = Astro.url.pathname;
     <a href="/">
       <img src={logo.url} alt="Logo" class="h-10" />
     </a>
-  )}
+  )}d
   <nav class="flex gap-4">
     {navigation_links.map((link) => (
       <a 
