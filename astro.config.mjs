@@ -3,6 +3,7 @@
 import { defineConfig } from 'astro/config';
 import preact from '@astrojs/preact';
 import node from '@astrojs/node';
+import path from 'path';
 
 
 // https://astro.build/config
@@ -21,5 +22,10 @@ export default defineConfig({
         overlay: true, // Affiche les erreurs
       },
     },
+    resolve: {
+      alias: {
+        '@': path.resolve('./src')
+      }
+    }
   },
 });
