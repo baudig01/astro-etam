@@ -1,28 +1,10 @@
 ---
 // src/components/footer.astro
 import '../styles/footer.scss';
+import { getSingleEntry } from '@/contentstack-sdk/fetchContent';
 
-interface Props {
-  data?: {
-    title: string,
-    copyright?: string;
-    information_section?: {
-      description?: string;
-      holiday?: string;
-      logo?: { url: string; title: string };
-      timings?: string;
-    }
-    navigation_links?: {
-      title: string;
-      link: Array<{
-        title: string;
-        href: string;
-        uuid?: number;
-      }>;
-    };  } | null;
-}
-
-const { data } = Astro.props;
+// Fetch les données du footer directement
+const data = await getSingleEntry('footer');
 const { copyright, title, information_section, navigation_links } = data || {};
 ---
 

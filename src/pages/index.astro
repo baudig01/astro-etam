@@ -1,35 +1,35 @@
 ---
-// src/pages/index.astro - Page d'accueil utilisant la même logique dynamique
+// src/pages/index.astro - Page d'accueil
 import Layout from '@/layouts/layout.astro';
-import { getSingleEntry } from '@/contentstack-sdk/fetchContent';
+import {getSingleEntry} from '@/contentstack-sdk/fetchContent';
 import '@/styles/index.scss';
-import PageContent from '@/components/pageContent.astro';
-import PreviewWrapper from '@/components/react/PreviewWrapper';
+import PageContent from '@/components/react/PageContent';
 
 // Activer le server-side rendering
 export const prerender = false;
 
-// Récupérer la page d'accueil depuis Contentstack
-const page = await getSingleEntry('page', { url: '/' });
-
 // Détection du mode preview via env
-const isPreview = import.meta.env.PUBLIC === 'true';
+const isPreview = import.meta.env.PUBLIC_IS_PREVIEW === 'true';
+const currentUrl = Astro.url.pathname;
 
-if (!page) {
-  return Astro.redirect('/404');
+// En mode production : fetch la page côté serveur
+let page;
+if (!isPreview) {
+    page = await getSingleEntry('page', {url: currentUrl});
+
+    if (!page) {
+        return Astro.redirect('/404');
+    }
 }
-
-const { title, seo_title, seo_description } = page;
 ---
 
-<Layout 
-  title={seo_title || title || 'Accueil'}
-  description={seo_description}
+<Layout
+    title={page?.seo_title || page?.title || 'Accueil'}
+    description={page?.seo_description}
 >
-  {isPreview ? (
-    <PreviewWrapper client:only="preact" />
-  ) : (
-    <PageContent page={page} />
-  )}
+    {isPreview ? (
+        <PageContent url={currentUrl} client:only="preact" />
+    ) : (
+        <PageContent page={page} client:load />
+    )}
 </Layout>
-

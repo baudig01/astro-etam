@@ -1,6 +1,7 @@
 ---
 // src/components/header.astro
 import '@/styles/header.scss';
+import { getSingleEntry } from '@/contentstack-sdk/fetchContent';
 
 interface NavLink {
   title: string;
@@ -11,16 +12,8 @@ interface Logo {
   url?: string;
 }
 
-interface Props {
-  data?: {
-    logo?: Logo;
-    cta_label?: string;
-    cta_url?: string;
-    navigation_links?: NavLink[] | { link?: NavLink[] };
-  } | null;
-}
-
-const { data } = Astro.props;
+// Fetch les données du header directement
+const data = await getSingleEntry('header');
 const { logo, cta_label, cta_url } = data || {};
 const navigation_links: NavLink[] = Array.isArray(data?.navigation_links)
   ? data.navigation_links

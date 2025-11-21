@@ -1,5 +1,6 @@
 // src/contentstack-sdk/fetchContent.ts
 import { Stack } from "./utils";
+import {QueryOperation} from "@contentstack/delivery-sdk";
 
 type SingleEntryOptions = {
   uid?: string;
@@ -11,32 +12,31 @@ export async function getSingleEntry(
   options?: SingleEntryOptions
 ) {
     if (options?.uid) {
-        const result = await Stack.ContentType(contentType)
-            .Entry(options.uid)
-            .toJSON()
+        const result = await Stack.contentType(contentType)
+            .entry(options.uid)
             .fetch();
         return result || null;
     }
 
-    const query = Stack.ContentType(contentType).Query();
+    const query = Stack.contentType(contentType).entry().query();
 
     if (options?.url) {
-        query.where('url', options.url);
+        query.where('url', QueryOperation.EQUALS, options.url);
     }
 
-    const result = await query
-        .toJSON()
-        .find();
+    const result = await query.find();
 
-    return result?.[0]?.[0] || null;
+    // Le nouveau SDK retourne { entries: [...] }
+    return result.entries?.[0] || null;
 }
 
 // Fonction utile pour récupérer toutes les entrées d'un content type
 export async function getAllEntries(contentType: string) {
-    const result = await Stack.ContentType(contentType)
-        .Query()
-        .toJSON()
+    const result = await Stack.contentType(contentType)
+        .entry()
+        .query()
         .find();
-    
-    return result?.[0] || [];
+
+    // Le nouveau SDK retourne { entries: [...] }
+    return result.entries || [];
 }

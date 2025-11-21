@@ -25,7 +25,8 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': path.resolve('./src')
-      }
-    }
-  },
+      },
+      dedupe: ['preact', '@preact/signals', '@preact/signals-core']
+    },
+  }
 });
